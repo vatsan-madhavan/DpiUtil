@@ -130,7 +130,17 @@ namespace SharedSpace.Windows.Dpi
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode() => ((DpiAwarenessContext)this).GetHashCode();
+        public override int GetHashCode()
+        {
+            try
+            {
+                return ((DpiAwarenessContext)this).GetHashCode();
+            }
+            catch (Exception)
+            {
+                return 0.GetHashCode();
+            }
+        }
 
         /// <inheritdoc/>
         /// <remarks>
