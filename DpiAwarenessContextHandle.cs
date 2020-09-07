@@ -136,7 +136,7 @@ namespace SharedSpace.Windows.Dpi
             {
                 return ((DpiAwarenessContext)this).GetHashCode();
             }
-            catch (Exception)
+            catch (ArgumentException)
             {
                 return 0.GetHashCode();
             }
