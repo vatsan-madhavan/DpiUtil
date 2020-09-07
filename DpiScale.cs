@@ -73,8 +73,7 @@ namespace SharedSpace.Windows.Dpi
         /// <returns>True if the two <see cref="DpiScale"/> objects represent the same DPI scale factor; False otherwise.</returns>
         public static bool operator ==(DpiScale dpi1, DpiScale dpi2)
         {
-            if (object.ReferenceEquals(dpi1, null) &&
-                object.ReferenceEquals(dpi2, null))
+            if (dpi1 is null && dpi2 is null)
             {
                 return true;
             }
@@ -90,12 +89,7 @@ namespace SharedSpace.Windows.Dpi
         /// <returns>True if the two <see cref="DpiScale"/> objects represent different DPI scale factors; False otherwise.</returns>
         public static bool operator !=(DpiScale dpi1, DpiScale dpi2)
         {
-            if (object.ReferenceEquals(dpi1, null) && !object.ReferenceEquals(dpi2, null))
-            {
-                return true;
-            }
-
-            if (object.ReferenceEquals(dpi2, null) && !object.ReferenceEquals(dpi1, null))
+            if ((dpi1 is null && dpi2 is object) || (dpi2 is null && dpi1 is object))
             {
                 return true;
             }
@@ -132,14 +126,14 @@ namespace SharedSpace.Windows.Dpi
                 return false;
             }
 
-            if (obj is DpiScale)
+            if (obj is DpiScale dpiScale)
             {
-                return this.Equals((DpiScale)obj);
+                return this.Equals(dpiScale);
             }
 
-            if (obj is System.Windows.DpiScale)
+            if (obj is System.Windows.DpiScale dpi)
             {
-                return this.Equals((System.Windows.DpiScale)obj);
+                return this.Equals(dpi);
             }
 
             return base.Equals(obj);
