@@ -111,19 +111,19 @@ namespace SharedSpace.Windows.Dpi
         /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            if (obj is IntPtr)
+            if (obj is IntPtr ptr)
             {
-                return this.Equals((IntPtr)obj);
+                return this.Equals(ptr);
             }
 
-            if (obj is DpiAwarenessContextHandle)
+            if (obj is DpiAwarenessContextHandle dpiAwarenessContextHandle)
             {
-                return this.Equals((DpiAwarenessContextHandle)obj);
+                return this.Equals(dpiAwarenessContextHandle);
             }
 
-            if (obj is DpiAwarenessContext)
+            if (obj is DpiAwarenessContext context)
             {
-                return this.Equals((DpiAwarenessContext)obj);
+                return this.Equals(context);
             }
 
             return base.Equals(obj);
