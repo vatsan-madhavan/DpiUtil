@@ -7,7 +7,8 @@ namespace SharedSpace.Windows.Dpi
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
-    using PInvoke;
+    using InteropUser32 = Interop.User32;
+    using PInvokeUser32 = PInvoke.User32;
 
     /// <summary>
     /// A <see cref="SafeHandle"/> representing DPI_AWARENESS_CONTEXT values.
@@ -25,16 +26,16 @@ namespace SharedSpace.Windows.Dpi
         private static readonly Dictionary<DpiAwarenessContext, IntPtr> WellKnownDpiAwarenessContextValues = new Dictionary<DpiAwarenessContext, IntPtr>
         {
             {
-                DpiAwarenessContext.Unaware, User32.DPI_AWARENESS_CONTEXT_UNAWARE
+                DpiAwarenessContext.Unaware, PInvokeUser32.DPI_AWARENESS_CONTEXT_UNAWARE
             },
             {
-                DpiAwarenessContext.SystemAware, User32.DPI_AWARENESS_CONTEXT_SYSTEM_AWARE
+                DpiAwarenessContext.SystemAware, PInvokeUser32.DPI_AWARENESS_CONTEXT_SYSTEM_AWARE
             },
             {
-                DpiAwarenessContext.PerMonitorAware, User32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE
+                DpiAwarenessContext.PerMonitorAware, PInvokeUser32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE
             },
             {
-                DpiAwarenessContext.PerMonitorAwareV2, User32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
+                DpiAwarenessContext.PerMonitorAwareV2, PInvokeUser32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
             },
             {
                 DpiAwarenessContext.UnawareGdiscaled, new IntPtr((int)DpiAwarenessContext.UnawareGdiscaled)
@@ -82,14 +83,14 @@ namespace SharedSpace.Windows.Dpi
         /// <param name="dpiAwarenessContextHandle">handle to be converted.</param>
         public static explicit operator DpiAwarenessContext(DpiAwarenessContextHandle dpiAwarenessContextHandle)
         {
-            if (!User32.IsValidDpiAwarenessContext(dpiAwarenessContextHandle.handle))
+            if (!InteropUser32.IsValidDpiAwarenessContext(dpiAwarenessContextHandle.handle))
             {
-                throw new ArgumentException(nameof(dpiAwarenessContextHandle));
+                throw new ArgumentException(string.Empty, nameof(dpiAwarenessContextHandle));
             }
 
             foreach (var dpiAwarenessContext in WellKnownDpiAwarenessContextValues.Keys)
             {
-                if (User32.AreDpiAwarenessContextsEqual(WellKnownDpiAwarenessContextValues[dpiAwarenessContext], dpiAwarenessContextHandle.handle))
+                if (InteropUser32.AreDpiAwarenessContextsEqual(WellKnownDpiAwarenessContextValues[dpiAwarenessContext], dpiAwarenessContextHandle.handle))
                 {
                     return dpiAwarenessContext;
                 }
@@ -99,11 +100,11 @@ namespace SharedSpace.Windows.Dpi
         }
 
         /// <inheritdoc/>
-        public bool Equals([AllowNull] IntPtr other) => User32.AreDpiAwarenessContextsEqual(this.handle, other);
+        public bool Equals([AllowNull] IntPtr other) => InteropUser32.AreDpiAwarenessContextsEqual(this.handle, other);
 
         /// <inheritdoc/>
         public bool Equals([AllowNull] DpiAwarenessContextHandle other) =>
-            other != null && User32.AreDpiAwarenessContextsEqual(this.handle, other.handle);
+            other != null && InteropUser32.AreDpiAwarenessContextsEqual(this.handle, other.handle);
 
         /// <inheritdoc/>
         public bool Equals([AllowNull] DpiAwarenessContext other) => this.Equals(WellKnownDpiAwarenessContextValues[other]);
